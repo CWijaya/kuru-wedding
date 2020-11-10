@@ -1,0 +1,125 @@
+$primary-color: #b49b57;
+$secondary-color: #e4dbc2;
+$tertiary-color: #fffbf7;
+$black-color: #212121;
+
+$mobile: 767px;
+$tablet: 768px;
+$tablet-landscape: 900px;
+$desktop: 1200px;
+$medium-desktop: 1480px;
+$big-desktop: 1680px;
+
+@media screen and (min-width: 1200px) {
+	$page-padding-left: 6%;
+}
+
+@mixin background-box($width, $paddingTop, $minHeight) {
+	position: relative;
+	width: $width;
+	min-height: $minHeight;
+	background-position: center center;
+	background-size: cover;
+
+	&:before {
+		content: "";
+		display: block;
+		padding-top: $paddingTop;
+	}
+}
+
+@mixin media-query-min($width) {
+	@media screen and (min-width: $width) {
+		@content;
+	}
+}
+
+@mixin media-query-max($width) {
+	@media screen and (max-width: $width) {
+		@content;
+	}
+}
+
+@mixin media-query-mobile {
+	@media screen and (max-width: $mobile) {
+		@content;
+	}
+}
+
+@mixin media-query-tablet-portrait-up {
+	@media screen and (min-width: $tablet) {
+		@content;
+	}
+}
+
+@mixin media-query-tablet-landscape-up {
+	@media screen and (min-width: $tablet-landscape) {
+		@content;
+	}
+}
+
+@mixin media-query-desktop-up {
+	@media screen and (min-width: $desktop) {
+		@content;
+	}
+}
+
+@mixin media-query-medium-desktop-up {
+	@media screen and (min-width: $medium-desktop) {
+		@content;
+	}
+}
+
+@mixin media-query-big-desktop-up {
+	@media screen and (min-width: $big-desktop) {
+		@content;
+	}
+}
+
+// @mixin media-query-mobile {
+//     @media screen and (max-width: $mobile) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-tablet-portrait {
+//     @media screen and (max-width: $tablet) and (orientation: portrait) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-small-upper {
+//     @media screen and (max-width: $small-upper) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-tablet-max {
+//     @media screen and (max-width: $tablet-max) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-max-1280 {
+//     @media screen and (max-width: 1280px) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-laptop {
+//     @media screen and (max-width: $laptop) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-medium-laptop {
+//     @media screen and (max-width: $medium-laptop) {
+//         @content;
+//     }
+// }
+
+// @mixin media-query-medium-desktop {
+//     @media screen and (max-width: $medium-desktop) {
+//         @content;
+//     }
+// }

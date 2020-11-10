@@ -1,0 +1,235 @@
+@import "css/normalize";
+@import "css/grid";
+@import "vars/variables";
+
+@font-face {
+	font-family: "Ageo Bold";
+	src: url("./assets/fonts/Ageo-Bold.woff2") format("woff2"), url("./assets/fonts/Ageo-Bold.woff") format("woff");
+	font-weight: bold;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Ageo Regular";
+	src: url("./assets/fonts/Ageo-Regular.woff2") format("woff2"), url("./assets/fonts/Ageo-Regular.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Ageo Extra Bold";
+	src: url("./assets/fonts/Ageo-ExtraBold.woff2") format("woff2"), url("./assets/fonts/Ageo-ExtraBold.woff") format("woff");
+	font-weight: 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Great Day Regular";
+	src: url("./assets/fonts/GreatDay.woff2") format("woff2"), url("./assets/fonts/GreatDay.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
+}
+
+body {
+	font-size: 15px;
+	font-family: "Ageo Regular";
+
+	@include media-query-tablet-portrait-up {
+		font-size: 16px;
+	}
+}
+
+#app {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background-color: #fff;
+	overflow: hidden;
+	//   padding: 0 4%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: "Ageo Extra Bold";
+	color: $primary-color;
+	margin: 0;
+}
+
+h1 {
+	font-size: 54px;
+	line-height: 1.4;
+	font-family: "Great Day Regular";
+	font-weight: 500;
+
+	@include media-query-tablet-portrait-up {
+		line-height: 1.3;
+		font-size: 92px;
+	}
+}
+
+h2 {
+	font-size: 28px;
+	letter-spacing: 2px;
+
+	@include media-query-tablet-portrait-up {
+		font-size: 52px;
+	}
+}
+
+h3 {
+	font-size: 28px;
+	letter-spacing: 2px;
+
+	@include media-query-tablet-portrait-up {
+		font-size: 42px;
+	}
+}
+
+h4 {
+	font-size: 26px;
+	letter-spacing: 1px;
+
+	@include media-query-tablet-portrait-up {
+		font-size: 38px;
+	}
+}
+
+h5 {
+	margin-top: 0;
+	font-size: 17px;
+	color: $primary-color;
+	font-family: "Ageo Regular";
+	font-weight: normal;
+
+	@include media-query-tablet-portrait-up {
+		font-size: 50px;
+		letter-spacing: 3px;
+	}
+}
+
+p {
+	margin-top: 0;
+	font-size: 15px;
+	color: $primary-color;
+	font-family: "Ageo Regular";
+
+	@include media-query-tablet-portrait-up {
+		font-size: 19px;
+	}
+
+	@include media-query-desktop-up {
+		font-size: 23px;
+	}
+
+	@include media-query-medium-desktop-up {
+		font-size: 26px;
+	}
+
+	&.bold {
+		font-family: "Ageo Bold";
+	}
+
+	&.extra-bold {
+		font-family: "Ageo Extra Bold";
+	}
+
+	&.right {
+		text-align: right;
+	}
+
+	&.italic {
+		font-style: italic;
+	}
+}
+
+.no-padding {
+	padding: 0;
+}
+
+.no-padding-left-desktop {
+	@include media-query-tablet-portrait-up {
+		padding-left: 0;
+	}
+}
+
+.no-padding-right-desktop {
+	@include media-query-tablet-portrait-up {
+		padding-right: 0;
+	}
+}
+
+.no-padding-left-mobile {
+	@include media-query-mobile {
+		padding-left: 0;
+	}
+}
+
+.no-padding-right-mobile {
+	@include media-query-mobile {
+		padding-right: 0;
+	}
+}
+
+.no-padding-left {
+	padding-left: 0;
+}
+
+.no-padding-right {
+	padding-right: 0;
+}
+
+.position-relative {
+	position: relative;
+}
+
+.row-flex-desktop {
+	@include media-query-tablet-portrait-up {
+		display: flex;
+	}
+}
+
+.media,
+.media-body {
+	overflow: hidden;
+	zoom: 1;
+}
+
+.media-body,
+.media-left,
+.media-right {
+	display: table-cell;
+	vertical-align: top;
+}
+
+.media-left,
+.media > .pull-left {
+	padding-right: 15px;
+}
+
+.media-object {
+	display: block;
+	width: 60px;
+	margin-top: 8px;
+}
+
+.media-body {
+	width: 10000px;
+}
+
+.hidden-mobile {
+	@include media-query-mobile {
+		display: none !important;
+	}
+}
+
+.hidden-tablet-up {
+	@include media-query-tablet-portrait-up {
+		display: none !important;
+	}
+}
