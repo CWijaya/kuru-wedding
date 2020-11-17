@@ -152,13 +152,13 @@
             <h1>Sehat</h1>
 
             <ul class="link-tab">
-                <li>Love</li>
-                <li>When</li>
-                <li>Pray</li>
+                <li><a href="#love" v-smooth-scroll>Love</a></li>
+                <li><a href="#when" v-smooth-scroll>When</a></li>
+                <li><a href="#pray" v-smooth-scroll>Pray</a></li>
             </ul>
         </div>
 
-        <div id="love">
+        <div id="love" class="section-linked">
             <div class="content-container">
                 <img
                     v-if="windowWidth > 767"
@@ -273,7 +273,7 @@
             </div>
         </div>
 
-        <div id="when">
+        <div id="when" class="section-linked">
             <div class="content-container">
                 <img
                     class="logo-gold"
@@ -342,52 +342,76 @@
             <hr />
         </div>
 
-        <div id="pray">
+        <div id="pray" class="section-linked">
+            <img
+                :src="require('@/assets/images/gold-leaves.png')"
+                alt="Flower"
+                class="flower-1"
+                v-if="windowWidth > 767"
+            />
+            <img
+                :src="require('@/assets/images/gold-leaves.png')"
+                alt="Flower"
+                class="flower-2"
+                v-if="windowWidth > 767"
+            />
             <div class="content-container">
-                <div class="header">Doa & Harapan</div>
+                <div class="text-center-desktop-up">
+                    <div class="header">Doa & Harapan</div>
+                </div>
                 <div class="card">
-                    <div class="media">
+                    <div
+                        class="media"
+                        v-for="(pray, index) in prays"
+                        :key="'índex-' + index"
+                    >
                         <div class="media-left">
                             <div class="initial">
-                                <span>T</span>
+                                <span>{{ pray.name | returnInitial }}</span>
                             </div>
                         </div>
                         <div class="media-body">
                             <div class="row">
-                                <div class="col-xs-4">
-                                    <p class="name">Tara Basro</p>
+                                <div class="col-xs-4 col-sm-3">
+                                    <p class="name">{{ pray.name }}</p>
                                 </div>
-                                <div class="col-xs-8 no-padding-left">
+                                <div class="col-xs-8 col-sm-9 no-padding-left">
                                     <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore et dolore magna.
+                                        {{ pray.comment }}
                                     </p>
                                 </div>
                             </div>
-                            <p class="time">06:05</p>
+                            <p class="time">
+                                {{ pray.created.toDate() | returnHours }}
+                            </p>
                         </div>
                     </div>
-
-                    <div class="media">
-                        <div class="media-left">
-                            <div class="initial">
-                                <span>A</span>
+                    <div class="pray-form">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3">
+                                <input
+                                    type="text"
+                                    placeholder="Name"
+                                    v-model="name"
+                                />
                             </div>
-                        </div>
-                        <div class="media-body">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <p class="name">Apit Mane</p>
-                                </div>
-                                <div class="col-xs-8 no-padding-left">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur
-                                        adipiscing elit.
-                                    </p>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="comment-form">
+                                    <!-- <input type="text" placeholder="Pray" /> -->
+                                    <textarea
+                                        placeholder="Pray"
+                                        rows="1"
+                                        v-model="comment"
+                                    ></textarea>
+                                    <button @click="addNewPray">
+                                        <img
+                                            src="./assets/images/arrow-gold.png"
+                                            alt="Arrow"
+                                            class="arrow"
+                                        />
+                                    </button>
                                 </div>
                             </div>
-                            <p class="time">06:05</p>
                         </div>
                     </div>
                 </div>
@@ -430,12 +454,105 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/firestore";
+
+// for sticky navbar
+let mainNavLinks = document.querySelectorAll("ul.link-tab li a");
+let mainSections = document.querySelectorAll(".section-linked");
+let lastId;
+let cur = [];
+
+// Get a Firestore instance
+export const db = firebase
+    .initializeApp({ projectId: "kuru-wedding" })
+    .firestore();
+
 export default {
     name: "App",
     data: function () {
         return {
             windowWidth: window.innerWidth,
+            prays: [],
+            name: "",
+            comment: "",
         };
+    },
+    filters: {
+        returnInitial: function (name) {
+            return name.charAt(0);
+        },
+        returnHours: function (time) {
+            const hours = time.getHours();
+            const minutes = time.getMinutes();
+
+            return hours + ":" + minutes;
+        },
+    },
+    methods: {
+        listenToPrayChanges: function () {
+            var self = this;
+            db.collection("prays")
+                .orderBy("created", "asc")
+                .onSnapshot(function (querySnapshot) {
+                    const prays = querySnapshot.docs.map((doc) => doc.data());
+                    console.log(prays);
+                    self.prays = prays;
+                });
+        },
+        addNewPray: function () {
+            var self = this;
+            db.collection("prays").add({
+                name: self.name,
+                comment: self.comment,
+                created: new Date(),
+            });
+
+            // reset form
+            this.name = "";
+            this.comment = "";
+        },
+
+        addStickyNavbar: function (event) {
+            // var header = document.querySelector("ul.link-tab");
+            var header = document.querySelector("ul.link-tab");
+            var sticky = header.offsetTop;
+
+            console.log(sticky);
+            console.log(window.pageYOffset);
+
+            if (window.pageYOffset > sticky) {
+                header.classList.add("sticky");
+            } else {
+                header.classList.remove("sticky");
+            }
+
+            // let fromTop = window.scrollY;
+
+            // mainNavLinks.forEach((link) => {
+            //     let section = document.querySelector(link.hash);
+
+            //     if (
+            //         section.offsetTop <= fromTop &&
+            //         section.offsetTop + section.offsetHeight > fromTop
+            //     ) {
+            //         link.classList.add("current");
+            //     } else {
+            //         link.classList.remove("current");
+            //     }
+            // });
+        },
+    },
+    mounted() {
+        // console.log(db);
+        this.listenToPrayChanges();
+    },
+    created() {
+        // add scroll listener
+        // window.addEventListener("scroll", this.addStickyNavbar);
+    },
+    destroyed() {
+        // window.removeEventListener("scroll", this.addStickyNavbar);
     },
 };
 </script>
@@ -474,6 +591,16 @@ footer {
     margin-right: 15px;
     margin-top: 60px;
 
+    @include media-query-tablet-portrait-up {
+        width: 100%;
+        max-width: 730px;
+        height: 580px;
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 12px;
+        margin-top: 100px;
+    }
+
     iframe {
         position: absolute;
         top: 0;
@@ -481,10 +608,32 @@ footer {
         width: 100%;
         height: 100%;
         border-radius: 5px;
+
+        @include media-query-tablet-portrait-up {
+            border-radius: 12px;
+        }
     }
 }
 
 #pray {
+    position: relative;
+
+    img.flower-1,
+    img.flower-2 {
+        position: absolute;
+        width: 20%;
+        display: block;
+        left: -4%;
+        top: 6%;
+        transform: scaleY(-1);
+    }
+
+    img.flower-2 {
+        transform: scaleX(-1) scaleY(-1);
+        left: initial;
+        right: -4%;
+    }
+
     .content-container {
         position: relative;
         width: 100%;
@@ -508,6 +657,13 @@ footer {
         display: inline-block;
         font-family: "Ageo Bold";
         letter-spacing: 1px;
+
+        @include media-query-tablet-portrait-up {
+            font-size: 24px;
+            margin-left: auto;
+            border-radius: 10px 10px 0 0;
+            padding: 18px 32px;
+        }
     }
 
     .card {
@@ -517,7 +673,8 @@ footer {
         border-radius: 4px;
 
         @include media-query-tablet-portrait-up {
-            padding: 35px 30px;
+            padding: 40px 35px;
+            border-radius: 12px;
         }
 
         .media {
@@ -532,12 +689,23 @@ footer {
             border-radius: 50%;
             font-family: "Ageo Extra Bold";
 
+            @include media-query-tablet-portrait-up {
+                width: 56px;
+                height: 56px;
+                margin-right: 20px;
+            }
+
             span {
                 position: absolute;
-                top: 7px;
-                left: 9px;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-41%);
                 font-size: 20px;
                 color: #e5d29d;
+
+                @include media-query-tablet-portrait-up {
+                    font-size: 37px;
+                }
             }
         }
 
@@ -554,6 +722,13 @@ footer {
                 border-top: 10px solid transparent;
                 border-right: 10px solid #fff;
                 border-bottom: 10px solid transparent;
+
+                @include media-query-tablet-portrait-up {
+                    top: 14px;
+                    border-top: 13px solid transparent;
+                    border-right: 20px solid #fff;
+                    border-bottom: 13px solid transparent;
+                }
             }
         }
 
@@ -563,8 +738,18 @@ footer {
             background-color: #fff;
             border-radius: 6px;
 
+            @include media-query-tablet-portrait-up {
+                padding: 22px 24px 24px;
+                border-radius: 12px;
+            }
+
             p {
                 margin-bottom: 0;
+
+                @include media-query-tablet-portrait-up {
+                    font-size: 23px;
+                    line-height: 1.4;
+                }
 
                 &.name {
                     font-family: "Ageo Bold";
@@ -575,6 +760,72 @@ footer {
                     bottom: 6px;
                     right: 6px;
                     font-size: 11px;
+
+                    @include media-query-tablet-portrait-up {
+                        bottom: 10px;
+                        right: 11px;
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+
+        .pray-form {
+            input,
+            textarea {
+                display: block;
+                background-color: #fff;
+                border: none;
+                box-shadow: none;
+                outline: none;
+                border-radius: 8px;
+                width: 100%;
+                padding: 15px;
+                font-size: 15px;
+                color: $primary-color;
+                font-family: "Ageo Regular";
+
+                @include media-query-tablet-portrait-up {
+                    font-size: 19px;
+                }
+
+                @include media-query-desktop-up {
+                    font-size: 23px;
+                }
+
+                @include media-query-medium-desktop-up {
+                    font-size: 26px;
+                }
+            }
+
+            .comment-form {
+                position: relative;
+                margin-top: 15px;
+
+                @include media-query-tablet-portrait-up {
+                    margin-top: 0;
+                }
+
+                input,
+                textarea {
+                    padding-right: 70px;
+                }
+
+                button {
+                    position: absolute;
+                    top: 50%;
+                    right: 0;
+                    transform: translateY(-50%);
+                    background-color: #fff;
+                    border: none;
+                    box-shadow: none;
+                    outline: none;
+                    cursor: pointer;
+
+                    img {
+                        width: 60px;
+                        display: block;
+                    }
                 }
             }
         }
@@ -607,9 +858,19 @@ footer {
 
         @include media-query-tablet-portrait-up {
             padding-top: 4%;
+            padding-left: 20px;
+            padding-right: 20px;
+            text-align: left;
+        }
+
+        @include media-query-desktop-up {
+            padding-left: 4%;
+            padding-right: 4%;
+        }
+
+        @include media-query-medium-desktop-up {
             padding-left: 11%;
             padding-right: 11%;
-            text-align: left;
         }
 
         .row {
@@ -747,6 +1008,16 @@ footer {
         .part-1,
         .part-2 {
             @include media-query-tablet-portrait-up {
+                left: 0;
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            @include media-query-desktop-up {
+                left: 3%;
+            }
+
+            @include media-query-medium-desktop-up {
                 left: 7%;
             }
         }
@@ -827,12 +1098,60 @@ footer {
         padding-right: 20px;
         margin-top: 120px;
 
+        @include media-query-tablet-portrait-up {
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         li {
             padding-left: 0;
             flex: 1;
             text-transform: uppercase;
             color: $primary-color;
             margin: 0 10px;
+            padding: 20px 15px;
+            background-color: transparent;
+            transition: all 0.3s ease-in-out;
+
+            &.active {
+                background-color: $primary-color;
+                color: #fff;
+
+                a {
+                    color: #fff;
+                }
+            }
+
+            @include media-query-tablet-portrait-up {
+                margin: 0 30px;
+            }
+
+            a {
+                color: $primary-color;
+                text-decoration: none;
+                font-size: 16px;
+                font-family: "Ageo Regular";
+                transition: all 0.3s ease-in-out;
+
+                @include media-query-tablet-portrait-up {
+                    font-size: 20px;
+                }
+
+                @include media-query-desktop-up {
+                    font-size: 24px;
+                }
+
+                @include media-query-medium-desktop-up {
+                    font-size: 26px;
+                }
+            }
+        }
+
+        &.sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
         }
     }
 

@@ -194,6 +194,12 @@ p {
 	}
 }
 
+.text-center-desktop-up {
+	@include media-query-tablet-portrait-up {
+		text-align: center;
+	}
+}
+
 .media,
 .media-body {
 	overflow: hidden;
