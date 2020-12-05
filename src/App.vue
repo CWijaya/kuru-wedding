@@ -168,7 +168,7 @@
                 <div class="part-1">
                     <div class="row">
                         <div class="col-xs-5 col-sm-6 no-padding-right-mobile">
-                            <picture>
+                            <!-- <picture>
                                 <source
                                     :srcset="
                                         require('@/assets/images/desktop/photoshoot-1.jpg')
@@ -190,16 +190,68 @@
                                     alt=" Farouk X Mandha"
                                     class="photoshoot"
                                 />
-                            </picture>
+                            </picture> -->
+                            <carousel
+                                :per-page="1"
+                                :mouseDrag="false"
+                                :touchDrag="false"
+                                :autoplay="true"
+                                :autoplayTimeout="5000"
+                                :loop="true"
+                                :paginationEnabled="false"
+                            >
+                                <slide>
+                                    <img
+                                        :src="
+                                            require('@/assets/images/slide-1-1.jpg')
+                                        "
+                                        alt=" Farouk X Mandha"
+                                        class="photoshoot"
+                                    />
+                                </slide>
+                                <slide>
+                                    <img
+                                        :src="
+                                            require('@/assets/images/slide-1-1.jpg')
+                                        "
+                                        alt=" Farouk X Mandha"
+                                        class="photoshoot"
+                                    />
+                                </slide>
+                                <slide>
+                                    <img
+                                        :src="
+                                            require('@/assets/images/slide-1-3.jpg')
+                                        "
+                                        alt=" Farouk X Mandha"
+                                        class="photoshoot"
+                                    />
+                                </slide>
+                                <slide>
+                                    <img
+                                        :src="
+                                            require('@/assets/images/slide-1-4.jpg')
+                                        "
+                                        alt=" Farouk X Mandha"
+                                        class="photoshoot"
+                                    />
+                                </slide>
+                            </carousel>
                         </div>
                         <div class="col-xs-7 col-sm-6">
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua.
-                                Quis ipsum suspendisse ultrices gravida. Risus
-                                commodo viverra maecenas accumsan lacus vel
-                                facilisis.
+                                Bertemu lewat media games 2 tahun lalu rupanya
+                                sukses melatih kami untuk melancarkan
+                                jurus-jurus jitu saat melewati berbagai
+                                rintangan dan tantangan kehidupan.
+                            </p>
+                            <p>
+                                Sementara itu, ngopi bareng di perjumpaan
+                                pertama kami juga membiasakan kami untuk santai
+                                dalam menjalani hidup, karena tidak ada hal yang
+                                tidak bisa dibicarakan dengan tenang dan
+                                ditemukan solusinya sambil menyeruput hangatnya
+                                kopi.
                             </p>
                         </div>
                     </div>
@@ -209,13 +261,19 @@
                     <div class="row">
                         <div class="col-xs-5 col-sm-6">
                             <p class="right">
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua.
-                                Quis ipsum suspendisse ultrices gravida. Risus
-                                commodo viverra maecenas accumsan lacus vel
-                                facilisis.
+                                Sehingga saat memutuskan untuk menikah dalam
+                                kondisi pandemi, kami merencanakan semuanya
+                                dengan santai namun seksama agar pernikahan ini
+                                tetap berkesan bagi kami sekaligus aman dan
+                                menyenangkan bagi semua tamu undangan
                             </p>
+                            <p class="right">
+                                Maka dari itu, besar harapan kami akan kehadiran
+                                kamu di momen spesial dan sekali seumur hidup
+                                ini!
+                            </p>
+                            <p class="right">Salam hangat dari jauh.</p>
+                            <p class="right">Farouq & Rizza</p>
                         </div>
                         <div class="col-xs-7 col-sm-6 no-padding-left-mobile">
                             <picture>
@@ -315,15 +373,15 @@
                     <div class="col-xs-12 col-sm-4">
                         <p class="akad">
                             Akad Nikah :<br />
-                            Ahad 20 Desember 2020<br />
-                            Pukul : 09.00 WIB
+                            Minggu, 20 Desember 2020<br />
+                            Pukul : 08.00 WIB
                         </p>
                     </div>
                     <div class="col-xs-12 col-sm-4">
                         <p class="akad">
-                            Resepsi <br />
-                            Ahad 20 Desember 2020<br />
-                            Pukul : 11.00 - 01.00 WIB
+                            Resepsi :<br />
+                            Minggu, 20 Desember 2020<br />
+                            Pukul : 11.00 - 13.00 WIB
                         </p>
                     </div>
                     <div class="col-xs-12 col-sm-4">
@@ -823,8 +881,12 @@ footer {
                     cursor: pointer;
 
                     img {
-                        width: 60px;
+                        width: 45px;
                         display: block;
+
+                        @include media-query-tablet-portrait-up {
+                            width: 60px;
+                        }
                     }
                 }
             }

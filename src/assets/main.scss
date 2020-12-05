@@ -239,3 +239,16 @@ p {
 		display: none !important;
 	}
 }
+
+.VueCarousel-inner {
+	transition: none !important;
+}
+
+.VueCarousel-slide {
+	transition: all 2s;
+	opacity: 0 !important;
+}
+
+.VueCarousel-slide-active {
+	opacity: 1 !important;
+}
